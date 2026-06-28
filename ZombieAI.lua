@@ -1,7 +1,5 @@
--- Connected Discord-GitHub  -- Your Discord + GitHub linked (mandatory)
-
+-- Discord: just.me.mack | Roblox: why_SoSeriou5  -- Connected Discord-GitHub
 -- Main zombie AI controller script for Hidden Devs application
--- This entire script is designed as a single sophisticated Luau file
 
 local PathfindingService = game:GetService("PathfindingService")  -- Get pathfinding service for intelligent movement
 local RepStorage = game:GetService("ReplicatedStorage")  -- Access replicated config data
