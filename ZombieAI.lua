@@ -1,7 +1,8 @@
--- Discord: just.me.mack | Roblox: why_SoSeriou5  -- Connected Discord-GitHub
+-- Discord: just.me.mack , Roblox: why_SoSeriou5  
+-- Connected discord with GitHub
 -- Main zombie AI controller script for Hidden Devs application
 
-local PathfindingService = game:GetService("PathfindingService")  -- Get pathfinding service for intelligent movement
+local PathfindingService = game:GetService("PathfindingService")  -- Gets pathfinding service for zombie movement
 local RepStorage = game:GetService("ReplicatedStorage")  -- Access replicated config data
 local ServerScriptService = game:GetService("ServerScriptService")  -- Access server-side factory
 
@@ -11,17 +12,17 @@ local rng = Random.new()  -- Random object for natural variation in behavior
 local ZombieConfig = require(RepStorage.ZombieConfig)  -- Load balance/config data
 local ZombieFactory = require(ServerScriptService.Systems.ZombieFactory)  -- Factory to spawn new zombies on death
 
-local ZOMBIE_TYPE = "Normal"  -- Current zombie variant (can be extended)
-local currentStats = ZombieConfig[ZOMBIE_TYPE]  -- Fetch stats for this type
+local ZOMBIE_TYPE = "Normal"  -- zombie type (light/normal/heavy)
+local currentStats = ZombieConfig[ZOMBIE_TYPE]  -- Fetch all stats for this zombie type
 
-if not currentStats then  -- Safety check for invalid config
+if not currentStats then  -- Safety check for invalid zombie type
 	warn("Invalid zombie type:", ZOMBIE_TYPE)
 	return
 end
 
 local zombie = script.Parent  -- The zombie model this script is parented to
 
--- Helper function to support both R6 and R15 rigs
+-- helper func to support both R6 and R15 rigs
 local function getRootPart(model)
 	return model:FindFirstChild("HumanoidRootPart")  -- Primary for R15
 		or model:FindFirstChild("Torso")  -- Fallback for R6
@@ -36,11 +37,11 @@ if not zombieRoot or not zombieHumanoid then  -- Critical component check
 	return
 end
 
-zombieHumanoid.MaxHealth = currentStats.Health  -- Set max health from config
-zombieHumanoid.Health = currentStats.Health  -- Initialize current health
-zombieHumanoid.WalkSpeed = currentStats.WalkSpeed  -- Apply movement speed
-zombie.Name = currentStats.DisplayName  -- Set model name
-zombieHumanoid.DisplayName = currentStats.DisplayName  -- Set overhead name
+zombieHumanoid.MaxHealth = currentStats.Health  -- sets max health from config
+zombieHumanoid.Health = currentStats.Health  -- Initialize current health from stats
+zombieHumanoid.WalkSpeed = currentStats.WalkSpeed  -- Apply movement speed based on type
+zombie.Name = currentStats.DisplayName  -- sets name
+zombieHumanoid.DisplayName = currentStats.DisplayName  -- sets overhead name
 
 -- Scale body parts + adjust Motor6D joints so limbs stay attached
 local SCALE = currentStats.Size  -- Scaling factor from config
